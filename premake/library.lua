@@ -23,6 +23,7 @@ function library( name )
 		'third_party/spirv-headers/include',
 		'third_party/spirv-tools/include',
 		'third_party/glslang/glslang',
+		'third_party/glslang',
 		'third_party/shaderc/libshaderc/include',
 	}
 

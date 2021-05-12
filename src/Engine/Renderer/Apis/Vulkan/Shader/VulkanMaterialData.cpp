@@ -13,7 +13,7 @@ namespace gp1 {
 	void VulkanMaterialData::CleanUp() {}
 
 	RendererType VulkanMaterialData::GetRendererType() const {
-		return RendererType::OPENGL;
+		return RendererType::VULKAN;
 	}
 
 } // namespace gp1

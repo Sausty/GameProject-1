@@ -14,6 +14,7 @@
 #include "Engine/Renderer/Apis/Vulkan/Core/VulkanGPU.h"
 #include "Engine/Renderer/Apis/Vulkan/Core/VulkanDevice.h"
 #include "Engine/Renderer/Apis/Vulkan/Core/VulkanSwapChain.h"
+#include "Engine/Renderer/Apis/Vulkan/Core/VulkanRenderPass.h"
 
 namespace gp1 {
 
@@ -24,6 +25,9 @@ namespace gp1 {
 		std::shared_ptr<vkcore::VulkanGPU> GPU;
 		std::shared_ptr<vkcore::VulkanDevice> Device;
 		std::shared_ptr<vkcore::VulkanSwapChain> SwapChain;
+
+		// Note: Multiple render passes? (Geometry, UI, Shadows...)
+		std::shared_ptr<vkcore::VulkanRenderPass> GeometryRenderPass;
 	};
 
 	class VulkanRenderer : public Renderer {
