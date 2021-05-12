@@ -4,6 +4,7 @@
 
 #pragma once
 #include "Engine/Renderer/Renderer.h"
+#include "Engine/Utility/Logger.h"
 
 namespace gp1 {
 
@@ -23,6 +24,7 @@ namespace gp1 {
 
 		virtual MaterialData* CreateMaterialData(Material* material) override;
 
+		static Logger VulkanOutputLogger;
 	protected:
 		virtual void InitRenderer() override;
 		virtual void DeInitRenderer() override;

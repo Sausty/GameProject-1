@@ -5,6 +5,8 @@
 //	- Maybe have m_Renderer.Render() get executed from a render thread as opposed to the window thread.
 //
 
+#define GAME_PROJECT_VULKAN
+
 #include "Engine/Application.h"
 #include "Engine/Utility/Logger.h"
 #include "Engine/Utility/Config/ConfigManager.h"
@@ -58,7 +60,13 @@ namespace gp1 {
 		m_Window.Init();
 		input::InputHandler::m_Window = &m_Window;
 		input::JoystickHandler::Init();
+
+#ifdef GAME_PROJECT_VULKAN
+		m_Renderer = Renderer::GetRenderer(RendererType::VULKAN, &m_Window);
+#else
 		m_Renderer = Renderer::GetRenderer(RendererType::OPENGL, &m_Window);
+#endif
+
 		m_Renderer->Init();
 
 		//this->m_Scene.AttachEntity(&this->m_TestEntity);

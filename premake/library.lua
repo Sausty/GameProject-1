@@ -18,6 +18,12 @@ function library( name )
 		'third_party/openal-soft/src/common',
 		'third_party/dr_libs',
 		'third_party/minimp3_s',
+		'third_party/volk',
+		'third_party/vulkan-headers/include',
+		'third_party/spirv-headers/include',
+		'third_party/spirv-tools/include',
+		'third_party/glslang/glslang',
+		'third_party/shaderc/libshaderc/include',
 	}
 
 	files {

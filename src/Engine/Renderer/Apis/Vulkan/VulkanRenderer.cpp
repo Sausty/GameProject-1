@@ -1,5 +1,6 @@
 //	
 //	Created by MarcasRealAccount on 31. Oct. 2020
+//  Modified by Sausty on 12. May. 2021
 //
 
 #include "Engine/Renderer/Apis/Vulkan/VulkanRenderer.h"
@@ -11,7 +12,19 @@
 #include "Engine/Renderer/Apis/Vulkan/Shader/VulkanMaterialData.h"
 #include "Engine/Renderer/Apis/Vulkan/Shader/VulkanShaderData.h"
 
+#include "Engine/Renderer/Apis/Vulkan/Core/VulkanInstance.h"
+#include "Engine/Renderer/Apis/Vulkan/Core/DeletionQueue.h"
+
 namespace gp1 {
+
+	struct VulkanRendererData
+	{
+		vkcore::VulkanInstance Instance;
+	};
+
+	static VulkanRendererData* s_RendererData;
+
+	Logger VulkanRenderer::VulkanOutputLogger = Logger("Vulkan Output Logger");
 
 	VulkanRenderer::VulkanRenderer(Window* window)
 		: Renderer(window) {}
@@ -45,11 +58,13 @@ namespace gp1 {
 	}
 
 	void VulkanRenderer::InitRenderer() {
-
+		s_RendererData = new VulkanRendererData();
 	}
 
 	void VulkanRenderer::DeInitRenderer() {
 
+		vkcore::DeletionQueue::Flush();
+		delete s_RendererData;
 	}
 
 	void VulkanRenderer::RenderScene(Scene* scene, uint32_t width, uint32_t height) {
