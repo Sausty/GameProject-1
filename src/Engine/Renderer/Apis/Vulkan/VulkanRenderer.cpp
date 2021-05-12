@@ -17,11 +17,6 @@
 
 namespace gp1 {
 
-	struct VulkanRendererData
-	{
-		vkcore::VulkanInstance Instance;
-	};
-
 	static VulkanRendererData* s_RendererData;
 
 	Logger VulkanRenderer::VulkanOutputLogger = Logger("Vulkan Output Logger");
@@ -57,13 +52,20 @@ namespace gp1 {
 		return new VulkanMaterialData(material);
 	}
 
+	VulkanRendererData* VulkanRenderer::GetVulkanRendererData()
+	{
+		return s_RendererData;
+	}
+
 	void VulkanRenderer::InitRenderer() {
 		s_RendererData = new VulkanRendererData();
+		s_RendererData->Surface = new vkcore::VulkanSurface(m_Window);
 	}
 
 	void VulkanRenderer::DeInitRenderer() {
 
 		vkcore::DeletionQueue::Flush();
+		delete s_RendererData->Surface;
 		delete s_RendererData;
 	}
 

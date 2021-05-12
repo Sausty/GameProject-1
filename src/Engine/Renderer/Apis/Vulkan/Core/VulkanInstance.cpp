@@ -5,9 +5,6 @@
 #include "Engine/Renderer/Apis/Vulkan/Core/VulkanInstance.h"
 #include "Engine/Renderer/Apis/Vulkan/Core/DeletionQueue.h"
 #include "Engine/Renderer/Apis/Vulkan/Core/VulkanUtils.h"
-#include "Engine/Renderer/Apis/Vulkan/VulkanRenderer.h"
-
-#include <vulkan/vulkan.h>
 
 namespace gp1 {
 	namespace vkcore {
@@ -75,11 +72,6 @@ namespace gp1 {
 
 					if (!strcmp(extension.extensionName, "VK_KHR_xlib_surface"))
 						InstanceExtensions.push_back("VK_KHR_xlib_surface");
-
-					if (!strcmp(extension.extensionName, "VK_MVK_moltenvk"))
-						InstanceExtensions.push_back("VK_MVK_moltenvk");
-					if (!strcmp(extension.extensionName, "VK_EXT_metal_surface"))
-						InstanceExtensions.push_back("VK_EXT_metal_surface");
 				}
 			}
 

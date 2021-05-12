@@ -15,8 +15,8 @@ namespace gp1 {
 		public:
 			VulkanInstance();
 
-			const std::vector<const char*>& GetInstanceLayers() const { return InstanceLayers; }
-			const std::vector<const char*>& GetInstanceExtensions() const { return InstanceExtensions; }
+			std::vector<const char*> GetInstanceLayers() { return InstanceLayers; }
+			std::vector<const char*> GetInstanceExtensions() { return InstanceExtensions; }
 			VkInstance& GetInstance() { return m_Instance; }
 			const VkInstance& GetInstance() const { return m_Instance; }
 		private:

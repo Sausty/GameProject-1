@@ -52,6 +52,7 @@ namespace gp1
 		void SetInputMode(int mode, int value);
 		const WindowData& GetWindowData() const;
 		const bool IsCloseRequested() const;
+		GLFWwindow* GetNativeHandle() { return m_NativeHandle; }
 		friend Renderer;
 	private:
 		WindowData m_WindowData;

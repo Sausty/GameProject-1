@@ -6,7 +6,17 @@
 #include "Engine/Renderer/Renderer.h"
 #include "Engine/Utility/Logger.h"
 
+#include "Engine/Renderer/Apis/Vulkan/Core/VulkanInstance.h"
+#include "Engine/Renderer/Apis/Vulkan/Core/VulkanSurface.h"
+#include <memory>
+
 namespace gp1 {
+
+	struct VulkanRendererData
+	{
+		vkcore::VulkanInstance Instance;
+		vkcore::VulkanSurface* Surface;
+	};
 
 	class VulkanRenderer : public Renderer {
 	public:
@@ -25,6 +35,7 @@ namespace gp1 {
 		virtual MaterialData* CreateMaterialData(Material* material) override;
 
 		static Logger VulkanOutputLogger;
+		static VulkanRendererData* GetVulkanRendererData();
 	protected:
 		virtual void InitRenderer() override;
 		virtual void DeInitRenderer() override;
