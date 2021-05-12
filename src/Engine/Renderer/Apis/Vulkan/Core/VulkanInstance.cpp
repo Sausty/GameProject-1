@@ -14,18 +14,8 @@ namespace gp1 {
 			// Initialise Volk
 			VkCheckError(volkInitialize());
 
-#ifdef _DEBUG
-			bool useValidationLayers = 1;
-#else
-			bool useValidationLayers = 0;
-#endif
 			// Validation layers
-
 			uint32_t instanceLayerCount = 0;
-			uint32_t layerFound = 0;
-			char* instanceValidationLayers[] = {
-				"VK_LAYER_KHRONOS_validation"
-			};
 
 			VkCheckError(vkEnumerateInstanceLayerProperties(&instanceLayerCount, NULL));
 
@@ -35,13 +25,7 @@ namespace gp1 {
 
 				VkCheckError(vkEnumerateInstanceLayerProperties(&instanceLayerCount, props.data()));
 
-				for (auto &layer : props) {
-					if (layer.layerName == instanceValidationLayers[0]) {
-						layerFound = 1;
-
-						InstanceLayers.push_back("VK_LAYER_KHRONOS_validation");
-					}
-				}
+				InstanceLayers.push_back("VK_LAYER_KHRONOS_validation");
 			}
 
 			// Extensions
@@ -57,8 +41,8 @@ namespace gp1 {
 				for (auto &extension : props) {
 					if (!strcmp(extension.extensionName, VK_KHR_SURFACE_EXTENSION_NAME))
 						InstanceExtensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
-					if (!strcmp(extension.extensionName, VK_KHR_SWAPCHAIN_EXTENSION_NAME))
-						InstanceExtensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
+					if (!strcmp(extension.extensionName, VK_EXT_DEBUG_REPORT_EXTENSION_NAME))
+						InstanceExtensions.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
 
 					// Platform specific surfaces
 					if (!strcmp(extension.extensionName, "VK_KHR_win32_surface"))
@@ -75,6 +59,10 @@ namespace gp1 {
 				}
 			}
 
+			for (auto extension : InstanceExtensions) {
+				VulkanRenderer::VulkanOutputLogger.LogDebug("Extension: %s", extension);
+			}
+
 			VkApplicationInfo appInfo{};
 			appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 			appInfo.pApplicationName = "Game-Project 1";
@@ -86,15 +74,13 @@ namespace gp1 {
 			VkInstanceCreateInfo createInfo{};
 			createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 			createInfo.pApplicationInfo = &appInfo;
-
-			if (useValidationLayers)
-			{
-				createInfo.enabledLayerCount = static_cast<uint32_t>(InstanceLayers.size());
-				createInfo.ppEnabledLayerNames = InstanceLayers.data();
-			}
-
 			createInfo.enabledExtensionCount = static_cast<uint32_t>(InstanceExtensions.size());
 			createInfo.ppEnabledExtensionNames = InstanceExtensions.data();
+
+			#ifdef _DEBUG
+			createInfo.enabledLayerCount = static_cast<uint32_t>(InstanceLayers.size());
+			createInfo.ppEnabledLayerNames = InstanceLayers.data();
+			#endif		
 
 			VkCheckError(vkCreateInstance(&createInfo, NULL, &m_Instance));
 

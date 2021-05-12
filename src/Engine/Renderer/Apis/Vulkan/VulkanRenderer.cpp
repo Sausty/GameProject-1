@@ -61,8 +61,9 @@ namespace gp1 {
 		s_RendererData.Surface = std::make_shared<vkcore::VulkanSurface>(m_Window);
 		s_RendererData.GPU = std::make_shared<vkcore::VulkanGPU>();
 		s_RendererData.Device = std::make_shared<vkcore::VulkanDevice>();
+		s_RendererData.SwapChain = std::make_shared<vkcore::VulkanSwapChain>(2, m_Window->GetWindowData().Width, m_Window->GetWindowData().Height);
 
-		VulkanOutputLogger.LogDebug("Using GPU with name: %s", s_RendererData.GPU->GetGPUProperties().deviceName);
+		VulkanOutputLogger.LogDebug("Created swap chain with 2 buffers");
 	}
 
 	void VulkanRenderer::DeInitRenderer() {

@@ -14,13 +14,13 @@ namespace gp1 {
 		public:
 			VulkanDevice();
 
-			VkDevice& GetVulkanDevice()		   { return m_Device;        }
-			VkQueue&  GetVulkanGraphicsQueue() { return m_GraphicsQueue; }
-			VkQueue&  GetVulkanPresentQueue()  { return m_PresentQueue;  }
+			VkDevice& GetVulkanDevice() { return m_Device; }
+			VkQueue& GetVulkanGraphicsQueue() { return m_GraphicsQueue; }
+			VkQueue& GetVulkanPresentQueue() { return m_PresentQueue; }
 		private:
 			VkDevice m_Device;
-			VkQueue  m_GraphicsQueue;
-			VkQueue  m_PresentQueue;
+			VkQueue m_GraphicsQueue;
+			VkQueue m_PresentQueue;
 		};
 
 	}

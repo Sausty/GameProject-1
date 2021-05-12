@@ -10,6 +10,7 @@
 #include "Engine/Events/KeyboardEvent.h"
 #include "Engine/Events/MouseEvent.h"
 #include "Engine/Events/WindowEvent.h"
+#include "Engine/Renderer/Renderer.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -30,11 +31,19 @@ namespace gp1
 		}
 
 		glfwDefaultWindowHints();
-		glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_FALSE);
+
+		if (m_WindowData.type == RendererType::OPENGL)
+		{
+			glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_FALSE);
+		}
+		else
+		{
+			glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+		}
 
 		GLFWmonitor* monitor{ glfwGetPrimaryMonitor() };
 		const GLFWvidmode* mode{ glfwGetVideoMode(monitor) };
@@ -143,10 +152,13 @@ namespace gp1
 				EventHandler::PushEvent(event);
 			});
 
-		glfwMakeContextCurrent(m_NativeHandle);
-		if (!gladLoadGLLoader( (GLADloadproc) glfwGetProcAddress) )
+		if (m_WindowData.type == RendererType::OPENGL)
 		{
-			m_Logger.Log(Severity::Error, "Failed to initialize GLAD!");
+			glfwMakeContextCurrent(m_NativeHandle);
+			if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+			{
+				m_Logger.Log(Severity::Error, "Failed to initialize GLAD!");
+			}
 		}
 
 		m_Logger.Log(Severity::Trace, "Window was created successfully.");

@@ -6,15 +6,43 @@
 #include "Engine/Renderer/Apis/Vulkan/Core/DeletionQueue.h"
 #include "Engine/Renderer/Apis/Vulkan/Core/VulkanUtils.h"
 #include "Engine/Renderer/Apis/Vulkan/VulkanRenderer.h"
+#include <set>
 
 namespace gp1 {
 	namespace vkcore {
+
+		static bool CheckDeviceExtensionSupport(VkPhysicalDevice device)
+		{
+			std::vector<const char*> deviceExtensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
+
+			uint32_t extensionCount;
+			vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr);
+
+			std::vector<VkExtensionProperties> availableExtensions(extensionCount);
+			vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, availableExtensions.data());
+
+			std::set<std::string> requiredExtensions(deviceExtensions.begin(), deviceExtensions.end());
+
+			for (const auto& extension : availableExtensions) {
+				requiredExtensions.erase(extension.extensionName);
+			}
+
+			return requiredExtensions.empty();
+		}
 
 		static bool IsDeviceSuitable(VkPhysicalDevice device)
 		{
 			VulkanGPU::QueueFamilies indices = VulkanGPU::QueryQueueIndices(device);
 
-			return indices.IsComplete();
+			bool extensionsSupported = CheckDeviceExtensionSupport(device);
+
+			bool swapChainAdequate = false;
+			if (extensionsSupported) {
+				SwapChainSupportDetails swapChainSupport = VulkanSwapChain::QuerySwapChainSupport(device);
+				swapChainAdequate = !swapChainSupport.Formats.empty() && !swapChainSupport.PresentModes.empty();
+			}
+
+			return indices.IsComplete() && extensionsSupported && swapChainAdequate;
 		}
 
 		VulkanGPU::VulkanGPU()

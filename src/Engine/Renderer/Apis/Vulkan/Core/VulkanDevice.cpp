@@ -18,7 +18,7 @@ namespace gp1 {
 		{
 			VkInstance& instance = VulkanRenderer::GetVulkanRendererData().Instance->GetInstance();
 			VkPhysicalDevice& physicalDevice = VulkanRenderer::GetVulkanRendererData().GPU->GetVulkanGPU();
-			VulkanGPU::QueueFamilies indices = VulkanRenderer::GetVulkanRendererData().GPU->GetDeviceQueues();
+			VulkanGPU::QueueFamilies indices = VulkanGPU::QueryQueueIndices(physicalDevice);
 
 			std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
 			std::set<uint32_t> uniqueQueueFamilies = { indices.GraphicsQueueIndex.value(), indices.PresentQueueIndex.value() };
@@ -35,15 +35,21 @@ namespace gp1 {
 
 			VkPhysicalDeviceFeatures deviceFeatures = VulkanRenderer::GetVulkanRendererData().GPU->GetGPUFeatures();
 
+			std::vector<const char*> validationLayers = VulkanRenderer::GetVulkanRendererData().Instance->GetInstanceLayers();
+
+			char* extensions[] = {
+				VK_KHR_SWAPCHAIN_EXTENSION_NAME
+			};
+
 			VkDeviceCreateInfo createInfo{};
 			createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 			createInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
 			createInfo.pQueueCreateInfos = queueCreateInfos.data();
 			createInfo.pEnabledFeatures = &deviceFeatures;
-			createInfo.enabledExtensionCount = 0;
+			createInfo.enabledExtensionCount = 1;
+			createInfo.ppEnabledExtensionNames = extensions;
 
 			#ifdef _DEBUG
-			std::vector<const char*> validationLayers = VulkanRenderer::GetVulkanRendererData().Instance->GetInstanceLayers();
 			createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
 			createInfo.ppEnabledLayerNames = validationLayers.data();
 			#endif

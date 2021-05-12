@@ -13,15 +13,17 @@
 #include "Engine/Renderer/Apis/Vulkan/Core/VulkanSurface.h"
 #include "Engine/Renderer/Apis/Vulkan/Core/VulkanGPU.h"
 #include "Engine/Renderer/Apis/Vulkan/Core/VulkanDevice.h"
+#include "Engine/Renderer/Apis/Vulkan/Core/VulkanSwapChain.h"
 
 namespace gp1 {
 
 	struct VulkanRendererData
 	{
 		std::shared_ptr<vkcore::VulkanInstance> Instance;
-		std::shared_ptr<vkcore::VulkanSurface>  Surface;
-		std::shared_ptr<vkcore::VulkanGPU>      GPU;
-		std::shared_ptr<vkcore::VulkanDevice>   Device;
+		std::shared_ptr<vkcore::VulkanSurface> Surface;
+		std::shared_ptr<vkcore::VulkanGPU> GPU;
+		std::shared_ptr<vkcore::VulkanDevice> Device;
+		std::shared_ptr<vkcore::VulkanSwapChain> SwapChain;
 	};
 
 	class VulkanRenderer : public Renderer {

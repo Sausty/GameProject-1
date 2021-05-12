@@ -12,6 +12,7 @@
 namespace gp1
 {
 	class Renderer;
+	enum class RendererType;
 
 	enum class WindowMode : int8_t
 	{
@@ -29,6 +30,7 @@ namespace gp1
 		std::string Title;
 		WindowMode Mode;
 		bool VSync;
+		RendererType type;
 	};
 
 	class Window

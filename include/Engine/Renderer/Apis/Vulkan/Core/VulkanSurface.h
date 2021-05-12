@@ -24,10 +24,10 @@ namespace gp1 {
 			VulkanSurface(Window* window);
 
 			SurfacePlatform GetSurfacePlatform() { return m_Platform; }
-			VkSurfaceKHR&   GetVulkanSurface()   { return m_Surface;  }
+			VkSurfaceKHR& GetVulkanSurface() { return m_Surface; }
 		private:
 			SurfacePlatform m_Platform;
-			VkSurfaceKHR    m_Surface;
+			VkSurfaceKHR m_Surface;
 		};
 	}
 }
