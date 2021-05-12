@@ -25,8 +25,8 @@ namespace gp1 {
 		VulkanSurface::VulkanSurface(Window* window)
 			: m_Platform(SurfacePlatform::None)
 		{
-			VkInstance& instance = VulkanRenderer::GetVulkanRendererData()->Instance.GetInstance();
-			std::vector<const char*> extensions = VulkanRenderer::GetVulkanRendererData()->Instance.GetInstanceExtensions();
+			VkInstance& instance = VulkanRenderer::GetVulkanRendererData().Instance->GetInstance();
+			std::vector<const char*> extensions = VulkanRenderer::GetVulkanRendererData().Instance->GetInstanceExtensions();
 
 			GLFWwindow* handle = window->GetNativeHandle();
 

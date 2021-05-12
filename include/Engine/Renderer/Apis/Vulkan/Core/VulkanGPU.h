@@ -25,19 +25,17 @@ namespace gp1 {
 
 			VulkanGPU();
 
-			static QueueFamilies QueryQueueIndices(VkPhysicalDevice gpu);
+			static QueueFamilies       QueryQueueIndices(VkPhysicalDevice gpu);
 
-			QueueFamilies GetDeviceQueues() { return m_DeviceQueues; }
-			VkPhysicalDevice& GetVulkanGPU() { return m_Device; }
-			const VkPhysicalDevice& GetVulkanGPU() const { return m_Device; }
-			VkPhysicalDeviceFeatures GetGPUFeatures() { return m_DeviceFeatures; }
+			QueueFamilies			   GetDeviceQueues()  { return m_DeviceQueues;     }
+			VkPhysicalDevice&          GetVulkanGPU()     { return m_Device;	       }
+			VkPhysicalDeviceFeatures   GetGPUFeatures()   { return m_DeviceFeatures;   }
 			VkPhysicalDeviceProperties GetGPUProperties() { return m_DeviceProperties; }
 		private:
 			VkPhysicalDevice m_Device = VK_NULL_HANDLE;
-			QueueFamilies m_DeviceQueues;
-			// TODO: Compute Queue
+			QueueFamilies    m_DeviceQueues;
 
-			VkPhysicalDeviceFeatures m_DeviceFeatures;
+			VkPhysicalDeviceFeatures   m_DeviceFeatures;
 			VkPhysicalDeviceProperties m_DeviceProperties;
 		};
 

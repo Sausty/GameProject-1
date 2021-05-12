@@ -19,7 +19,7 @@ namespace gp1 {
 
 		VulkanGPU::VulkanGPU()
 		{
-			VkInstance& instance = VulkanRenderer::GetVulkanRendererData()->Instance.GetInstance();
+			VkInstance& instance = VulkanRenderer::GetVulkanRendererData().Instance->GetInstance();
 
 			uint32_t deviceCount = 0;
 			vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
@@ -37,11 +37,17 @@ namespace gp1 {
 					break;
 				}
 			}
+
+			m_DeviceQueues = QueryQueueIndices(m_Device);
+
+			vkGetPhysicalDeviceProperties(m_Device, &m_DeviceProperties);
+			vkGetPhysicalDeviceFeatures(m_Device, &m_DeviceFeatures);
 		}
 
 		VulkanGPU::QueueFamilies VulkanGPU::QueryQueueIndices(VkPhysicalDevice gpu)
 		{
 			VulkanGPU::QueueFamilies indices;
+			VkSurfaceKHR surface = VulkanRenderer::GetVulkanRendererData().Surface->GetVulkanSurface();
 
 			uint32_t queueFamilyCount = 0;
 			vkGetPhysicalDeviceQueueFamilyProperties(gpu, &queueFamilyCount, nullptr);
@@ -56,7 +62,7 @@ namespace gp1 {
 				}
 
 				VkBool32 presentSupport = false;
-				//vkGetPhysicalDeviceSurfaceSupportKHR(gpu, i, surface, &presentSupport);
+				vkGetPhysicalDeviceSurfaceSupportKHR(gpu, i, surface, &presentSupport);
 
 				if (presentSupport) {
 					indices.PresentQueueIndex = i;

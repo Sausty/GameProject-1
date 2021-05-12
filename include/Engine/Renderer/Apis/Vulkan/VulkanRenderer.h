@@ -3,19 +3,25 @@
 //	
 
 #pragma once
+
+#include <memory>
+
 #include "Engine/Renderer/Renderer.h"
 #include "Engine/Utility/Logger.h"
 
 #include "Engine/Renderer/Apis/Vulkan/Core/VulkanInstance.h"
 #include "Engine/Renderer/Apis/Vulkan/Core/VulkanSurface.h"
-#include <memory>
+#include "Engine/Renderer/Apis/Vulkan/Core/VulkanGPU.h"
+#include "Engine/Renderer/Apis/Vulkan/Core/VulkanDevice.h"
 
 namespace gp1 {
 
 	struct VulkanRendererData
 	{
-		vkcore::VulkanInstance Instance;
-		vkcore::VulkanSurface* Surface;
+		std::shared_ptr<vkcore::VulkanInstance> Instance;
+		std::shared_ptr<vkcore::VulkanSurface>  Surface;
+		std::shared_ptr<vkcore::VulkanGPU>      GPU;
+		std::shared_ptr<vkcore::VulkanDevice>   Device;
 	};
 
 	class VulkanRenderer : public Renderer {
@@ -35,7 +41,7 @@ namespace gp1 {
 		virtual MaterialData* CreateMaterialData(Material* material) override;
 
 		static Logger VulkanOutputLogger;
-		static VulkanRendererData* GetVulkanRendererData();
+		static VulkanRendererData GetVulkanRendererData();
 	protected:
 		virtual void InitRenderer() override;
 		virtual void DeInitRenderer() override;

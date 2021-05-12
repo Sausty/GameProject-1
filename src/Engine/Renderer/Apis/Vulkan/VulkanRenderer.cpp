@@ -12,12 +12,11 @@
 #include "Engine/Renderer/Apis/Vulkan/Shader/VulkanMaterialData.h"
 #include "Engine/Renderer/Apis/Vulkan/Shader/VulkanShaderData.h"
 
-#include "Engine/Renderer/Apis/Vulkan/Core/VulkanInstance.h"
 #include "Engine/Renderer/Apis/Vulkan/Core/DeletionQueue.h"
 
 namespace gp1 {
 
-	static VulkanRendererData* s_RendererData;
+	static VulkanRendererData s_RendererData;
 
 	Logger VulkanRenderer::VulkanOutputLogger = Logger("Vulkan Output Logger");
 
@@ -52,21 +51,22 @@ namespace gp1 {
 		return new VulkanMaterialData(material);
 	}
 
-	VulkanRendererData* VulkanRenderer::GetVulkanRendererData()
+	VulkanRendererData VulkanRenderer::GetVulkanRendererData()
 	{
 		return s_RendererData;
 	}
 
 	void VulkanRenderer::InitRenderer() {
-		s_RendererData = new VulkanRendererData();
-		s_RendererData->Surface = new vkcore::VulkanSurface(m_Window);
+		s_RendererData.Instance = std::make_shared<vkcore::VulkanInstance>();
+		s_RendererData.Surface = std::make_shared<vkcore::VulkanSurface>(m_Window);
+		s_RendererData.GPU = std::make_shared<vkcore::VulkanGPU>();
+		s_RendererData.Device = std::make_shared<vkcore::VulkanDevice>();
+
+		VulkanOutputLogger.LogDebug("Using GPU with name: %s", s_RendererData.GPU->GetGPUProperties().deviceName);
 	}
 
 	void VulkanRenderer::DeInitRenderer() {
-
 		vkcore::DeletionQueue::Flush();
-		delete s_RendererData->Surface;
-		delete s_RendererData;
 	}
 
 	void VulkanRenderer::RenderScene(Scene* scene, uint32_t width, uint32_t height) {

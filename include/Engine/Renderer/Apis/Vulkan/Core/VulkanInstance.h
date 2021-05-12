@@ -15,14 +15,13 @@ namespace gp1 {
 		public:
 			VulkanInstance();
 
-			std::vector<const char*> GetInstanceLayers() { return InstanceLayers; }
+			VkInstance&				 GetInstance()			 { return m_Instance; }
+			std::vector<const char*> GetInstanceLayers()	 { return InstanceLayers; }
 			std::vector<const char*> GetInstanceExtensions() { return InstanceExtensions; }
-			VkInstance& GetInstance() { return m_Instance; }
-			const VkInstance& GetInstance() const { return m_Instance; }
 		private:
 			std::vector<const char*> InstanceLayers;
 			std::vector<const char*> InstanceExtensions;
-			VkInstance m_Instance;
+			VkInstance			     m_Instance;
 		};
 
 	}
