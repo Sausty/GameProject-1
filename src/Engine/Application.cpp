@@ -61,11 +61,7 @@ namespace gp1 {
 		input::InputHandler::m_Window = &m_Window;
 		input::JoystickHandler::Init();
 
-#ifdef GAME_PROJECT_VULKAN
-		m_Renderer = Renderer::GetRenderer(RendererType::VULKAN, &m_Window);
-#else
-		m_Renderer = Renderer::GetRenderer(RendererType::OPENGL, &m_Window);
-#endif
+		m_Renderer = Renderer::GetRenderer(m_Window.GetWindowData().type, &m_Window);
 
 		m_Renderer->Init();
 
